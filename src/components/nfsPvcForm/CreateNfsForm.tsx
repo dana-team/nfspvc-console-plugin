@@ -45,6 +45,8 @@ export const CreateNfsPvc: React.FC = () => {
     }
   };
 
+  const toggleRef = React.useRef<MenuToggleElement>(null);
+
   return (
     <div className="co-m-pane__body co-m-pane__form">
       <Helmet>
@@ -59,7 +61,7 @@ export const CreateNfsPvc: React.FC = () => {
           <NfsFormTextInput
             field="pvcnfs-name"
             label="Name"
-            onChange={(_, value) => dispatch({ type: setName, name: value })}
+            onChange={(value) => dispatch({ type: setName, name: value })}
             onError={() => dispatch({ type: setError, message: state.nameError })}
             placeholder="my-storage"
             value={state.name}
@@ -72,7 +74,7 @@ export const CreateNfsPvc: React.FC = () => {
           <NfsFormTextInput
             field="path"
             label="Path"
-            onChange={(_, value) => dispatch({ type: setPath, path: value })}
+            onChange={(value) => dispatch({ type: setPath, path: value })}
             onError={() => dispatch({ type: setError, message: state.pathError })}
             placeholder="/volume/my_volume"
             value={state.path}
@@ -88,21 +90,21 @@ export const CreateNfsPvc: React.FC = () => {
                 id="capacityValue"
                 name="capacityValue"
                 value={state.capacityValue}
-                onChange={(_, value) => dispatch({ type: setCapacityValue, capacity: value })}
+                onChange={(value) => dispatch({ type: setCapacityValue, capacity: value })}
                 placeholder="Size"
                 style={{ flexGrow: 1, minWidth: '100%' }}
               />
               <Dropdown
+                className='custom-dropdown'
                 toggle={
-                  (toggleRef: React.Ref<MenuToggleElement>) => (
-                    <MenuToggle
-                      onClick={() => setIsStorageUnitOpen(!isStorageUnitOpen)}
-                      id="capacity-unit"
-                      ref={toggleRef}
-                    >
-                      {dropdownCapacityUnits[state.capacityUnit] || "Select Unit"}
-                    </MenuToggle>
-                  )
+                  <MenuToggle
+                    onClick={() => setIsStorageUnitOpen(!isStorageUnitOpen)}
+                    id="capacity-unit"
+                    ref={toggleRef}
+                  >
+                    {dropdownCapacityUnits[state.capacityUnit] || "Select Unit"}
+                  </MenuToggle>
+
                 }
                 isOpen={isStorageUnitOpen}
                 children={Object.keys(dropdownCapacityUnits).map((key) => (
@@ -124,17 +126,16 @@ export const CreateNfsPvc: React.FC = () => {
           <FormGroup label="Access Mode" style={{ margin: "0 0 20px 0" }}
             isRequired fieldId="access-mode">
             <Dropdown
-              toggle={
-                (toggleRef: React.Ref<MenuToggleElement>) => (
-                  <MenuToggle
-                    onClick={() => setIsAccessModeOpen(!isAccessModeOpen)}
-                    id="access-mode"
-                    ref={toggleRef}
-                  >
-                    {state.AccessMode || 'Select Access Mode'}
-                  </MenuToggle>
-                )
-              }
+              className='custom-dropdown'
+              toggle={(
+                <MenuToggle
+                  onClick={() => setIsAccessModeOpen(!isAccessModeOpen)}
+                  id="access-mode"
+                  ref={toggleRef}
+                >
+                  {state.AccessMode || 'Select Access Mode'}
+                </MenuToggle>
+              )}
               isOpen={isAccessModeOpen}
               children={dropdownAccessModes.map((mode) => (
                 <DropdownItem
@@ -148,12 +149,13 @@ export const CreateNfsPvc: React.FC = () => {
                 </DropdownItem>
               ))}
             />
+
           </FormGroup>
 
           <NfsFormTextInput
             field="server"
             label="Server"
-            onChange={(_, value) => dispatch({ type: setServer, server: value })}
+            onChange={(value) => dispatch({ type: setServer, server: value })}
             onError={() => dispatch({ type: setError, message: state.serverError })}
             placeholder='vs-nas-omer'
             value={state.server}
