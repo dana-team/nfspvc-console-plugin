@@ -3,18 +3,86 @@
     "type": "console.page/route",
     "properties": {
       "exact": true,
-      "path": "/example",
-      "component": { "$codeRef": "ExamplePage" }
+      "path": "/k8s/ns/:ns/nfspvc.dana.io~v1alpha1~NfsPvc/~new/form",
+      "component": { "$codeRef": "CreateNfsForm" }
     }
   },
   {
-    "type": "console.navigation/href",
+    "type": "console.navigation/section",
     "properties": {
-      "id": "example",
-      "name": "%plugin__console-plugin-template~Plugin Example%",
-      "href": "/example",
+      "id": "storage-automations",
+      "name": "%plugin__console-plugin-template~Storage Automations%",
+      "insertBefore": "storage",
+      "perspective": "admin"
+    }
+  },
+  {
+    "type": "console.model-definition",
+    "properties": {
+      "models": [
+        {
+          "id": "nfspvc",
+          "kind": "NfsPvc",
+          "plural": "nfspvcs",
+          "abbr": "NPC",
+          "apiGroup": "nfspvc.dana.io",
+          "apiVersion": "v1alpha1",
+          "namespaced": true,
+          "label": "Nfspvc",
+          "labelPlural": "Nfs Pvc",
+          "crd": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "console.navigation/resource-ns",
+    "properties": {
       "perspective": "admin",
-      "section": "home"
+      "section": "storage-automations",
+      "id": "nfspvcs",
+      "name": "%plugin__console-plugin-template~NFS PVC%",
+      "model": {
+        "group": "nfspvc.dana.io",
+        "version": "v1alpha1",
+        "kind": "NfsPvc"
+      }
+    }
+  },
+  {
+    "type": "console.page/resource/list",
+    "properties": {
+      "model": {
+        "group": "nfspvc.dana.io",
+        "version": "v1alpha1",
+        "kind": "NfsPvc"
+      },
+      "component": {
+        "$codeRef": "NfsPage"
+      }
+    }
+  },
+  {
+    "type": "console.page/resource/create",
+    "properties": {
+      "model": {
+        "group": "nfspvc.dana.io",
+        "version": "v1alpha1",
+        "kind": "NfsPvc"
+      },
+      "component": {
+        "$codeRef": "CreateNfsForm"
+      }
+    }
+  },
+  {
+    "type": "console.page/route",
+    "properties": {
+      "exact": false,
+      "path": ["/k8s/ns/:ns/nfspvc", "/k8s/all-namespaces/nfspvcs"],
+      "component": {
+        "$codeRef": "NfsPage"
+      }
     }
   }
 ]
