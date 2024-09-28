@@ -1,4 +1,4 @@
-import { K8sResourceKind } from "@openshift-console/dynamic-plugin-sdk";
+import { K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
 
 export type State = {
     name: string;
@@ -12,5 +12,5 @@ export type State = {
     AccessMode: string;
     progress: boolean;
     error: string;
-    payload: K8sResourceKind;
+    payload: K8sResourceCommon;
 };

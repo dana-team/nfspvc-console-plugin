@@ -1,4 +1,3 @@
-import { useActiveNamespace } from '@openshift-console/dynamic-plugin-sdk';
 import { Button, Page, PageSection } from '@patternfly/react-core';
 import * as React from 'react';
 import { useMemo } from 'react';
@@ -7,6 +6,7 @@ import { ALL_NAMESPACES, DEFAULT_NAMESPACE } from '../../consts';
 import '../../global.css';
 import { Nfspvc } from '../../types/nfspvc';
 import NfsPvcList from './NfsPvcList';
+import useActiveNamespace from '../../hooks/useActiveNamespace';
 
 
 const createNfsPvcInNamespacePath = (namespace: string): string => {
@@ -19,7 +19,7 @@ const createNfsPvcInNamespacePath = (namespace: string): string => {
 
 
 const NfsPage: React.FC = () => {
-  const [namespace] = useActiveNamespace();
+  const namespace = useActiveNamespace();
   const createPath = useMemo(() => createNfsPvcInNamespacePath(namespace), [namespace]);
 
   return (

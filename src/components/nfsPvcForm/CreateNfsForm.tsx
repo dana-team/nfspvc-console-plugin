@@ -1,18 +1,19 @@
-import { k8sCreate, K8sResourceKind, useActiveNamespace } from '@openshift-console/dynamic-plugin-sdk';
-import { ActionGroup, Alert, AlertVariant, Button, Dropdown, DropdownItem, Form, FormGroup, InputGroup, MenuToggle, MenuToggleElement, Spinner, TextInput } from '@patternfly/react-core';
+import { k8sCreate, K8sResourceCommon } from '@openshift-console/dynamic-plugin-sdk';
+import { ActionGroup, Alert, AlertVariant, Button, Dropdown, DropdownItem, Form, FormGroup, InputGroup, MenuToggle, Spinner, TextInput } from '@patternfly/react-core';
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom-v5-compat';
+import { useHistory } from 'react-router-dom';
 import { dropdownAccessModes, dropdownCapacityUnits, setAccessMode, setCapacityUnit, setCapacityValue, setError, setName, setPath, setProgress, setServer, unsetProgress } from '../../consts';
 import '../../global.css';
 import { useCreateNfsPvcState } from '../../hooks/useCreateNfsPvcState';
 import { Nfspvc } from '../../types/nfspvc';
 import Section from '../nfsPvcPage/Section';
 import NfsFormTextInput from './NfsFormTextInput';
+import useActiveNamespace from '../../hooks/useActiveNamespace';
 
 export const CreateNfsPvc: React.FC = () => {
-  const [namespace] = useActiveNamespace();
-  const navigate = useNavigate();
+  const namespace = useActiveNamespace();
+  const history = useHistory();
 
   const {
     state,
@@ -38,7 +39,7 @@ export const CreateNfsPvc: React.FC = () => {
       const resource = await k8sCreate({ model: Nfspvc, ns: namespace, data: state.payload });
       dispatch({ type: unsetProgress });
       const { apiGroup, apiVersion, kind } = Nfspvc;
-      navigate(`/k8s/ns/${namespace}/${apiGroup}~${apiVersion}~${kind}/${(resource as K8sResourceKind).metadata.name}`);
+      history.push(`/k8s/ns/${namespace}/${apiGroup}~${apiVersion}~${kind}/${(resource as K8sResourceCommon).metadata.name}`);
     } catch (err) {
       dispatch({ type: setError, message: err.message });
       dispatch({ type: unsetProgress });
@@ -59,7 +60,7 @@ export const CreateNfsPvc: React.FC = () => {
           <NfsFormTextInput
             field="pvcnfs-name"
             label="Name"
-            onChange={(_, value) => dispatch({ type: setName, name: value })}
+            onChange={(value) => dispatch({ type: setName, name: value })}
             onError={() => dispatch({ type: setError, message: state.nameError })}
             placeholder="my-storage"
             value={state.name}
@@ -72,7 +73,7 @@ export const CreateNfsPvc: React.FC = () => {
           <NfsFormTextInput
             field="path"
             label="Path"
-            onChange={(_, value) => dispatch({ type: setPath, path: value })}
+            onChange={(value) => dispatch({ type: setPath, path: value })}
             onError={() => dispatch({ type: setError, message: state.pathError })}
             placeholder="/volume/my_volume"
             value={state.path}
@@ -88,21 +89,19 @@ export const CreateNfsPvc: React.FC = () => {
                 id="capacityValue"
                 name="capacityValue"
                 value={state.capacityValue}
-                onChange={(_, value) => dispatch({ type: setCapacityValue, capacity: value })}
+                onChange={(value) => dispatch({ type: setCapacityValue, capacity: String(value) })}
                 placeholder="Size"
                 style={{ flexGrow: 1, minWidth: '100%' }}
               />
               <Dropdown
+                className="custom-dropdown"
                 toggle={
-                  (toggleRef: React.Ref<MenuToggleElement>) => (
                     <MenuToggle
                       onClick={() => setIsStorageUnitOpen(!isStorageUnitOpen)}
                       id="capacity-unit"
-                      ref={toggleRef}
                     >
                       {dropdownCapacityUnits[state.capacityUnit] || "Select Unit"}
                     </MenuToggle>
-                  )
                 }
                 isOpen={isStorageUnitOpen}
                 children={Object.keys(dropdownCapacityUnits).map((key) => (
@@ -124,16 +123,14 @@ export const CreateNfsPvc: React.FC = () => {
           <FormGroup label="Access Mode" style={{ margin: "0 0 20px 0" }}
             isRequired fieldId="access-mode">
             <Dropdown
+              className="custom-dropdown"
               toggle={
-                (toggleRef: React.Ref<MenuToggleElement>) => (
                   <MenuToggle
                     onClick={() => setIsAccessModeOpen(!isAccessModeOpen)}
                     id="access-mode"
-                    ref={toggleRef}
                   >
                     {state.AccessMode || 'Select Access Mode'}
                   </MenuToggle>
-                )
               }
               isOpen={isAccessModeOpen}
               children={dropdownAccessModes.map((mode) => (
@@ -153,7 +150,7 @@ export const CreateNfsPvc: React.FC = () => {
           <NfsFormTextInput
             field="server"
             label="Server"
-            onChange={(_, value) => dispatch({ type: setServer, server: value })}
+            onChange={(value) => dispatch({ type: setServer, server: value })}
             onError={() => dispatch({ type: setError, message: state.serverError })}
             placeholder='vs-nas-omer'
             value={state.server}
@@ -181,7 +178,7 @@ export const CreateNfsPvc: React.FC = () => {
           <Button type="submit" variant="primary" isDisabled={state.progress}>
             {state.progress && <Spinner size="md" />} Create
           </Button>
-          <Button onClick={() => navigate(-1)} type="button" variant="secondary">
+          <Button onClick={() => history.goBack()} type="button" variant="secondary">
             Cancel
           </Button>
         </ActionGroup>

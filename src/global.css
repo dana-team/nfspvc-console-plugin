@@ -29,3 +29,7 @@
 .p-0 {
   padding: 0;
 }
+
+.custom-dropdown li {
+  list-style-type: none; 
+}

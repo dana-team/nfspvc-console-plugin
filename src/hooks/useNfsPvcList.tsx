@@ -1,13 +1,14 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useActiveNamespace, useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
+import { useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
 import { K8sResourceCommon } from 'src/types/k8sResourceCommon';
 import { ALL_NAMESPACES, columns, NfsPvcGroupVersionKind } from '../consts';
 import { columnMappings, compareValues, getValue } from '../utils/sort';
+import useActiveNamespace from './useActiveNamespace';
 
 const useNfsPvcList = () => {
     const [sortBy, setSortBy] = useState({ index: 0, direction: 'asc' });
     const [searchValue, setSearchValue] = useState<string>('');
-    const [ns] = useActiveNamespace();
+    const ns = useActiveNamespace();
     const namespace = ns === ALL_NAMESPACES ? undefined : ns;
 
     const [nfspvcs, loaded, error] = useK8sWatchResource<K8sResourceCommon[]>({

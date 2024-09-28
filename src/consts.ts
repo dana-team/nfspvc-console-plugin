@@ -43,4 +43,4 @@ export const NamespaceGroupVersionKind = {
 
 export const dropdownAccessModes: string[] = [ReadWriteMany, ReadWriteOnce, ReadOnlyMany];
 export const dropdownCapacityUnits = { Mi: "MiB", Gi: "GiB" };
-  
+export const namespaceRouteKey = 'ns'

@@ -4,7 +4,7 @@ import * as React from "react";
 type NfsFormTextInputProps = {
     field: string;
     label: string
-    onChange: (event: React.FormEvent<HTMLInputElement>, value: string) => void;
+    onChange: (value: string) => void;
     onError: React.ReactEventHandler<HTMLInputElement>;
     placeholder: string;
     hint?: string;
@@ -22,7 +22,7 @@ const NfsFormTextInput: React.FC<NfsFormTextInputProps> = ({ field, label, onCha
       id={field}
       name={field}
       value={value}
-      onChange={onChange}
+      onChange={(value) =>  onChange(String(value))}
       validated={error ? 'error' : 'default'}
       onError={onError}
       placeholder={placeholder}
