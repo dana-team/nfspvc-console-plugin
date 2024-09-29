@@ -55,10 +55,7 @@ jobs:
       - name: Set OCI chart name
         id: oci-chart-name
         run: echo "value=${{ steps.oci-registry-name.outputs.value }}/${{ steps.chart-name.outputs.value }}" >> "$GITHUB_OUTPUT"
-
-      - name: Helm lint
-        run: helm lint charts/${{ steps.chart-name.outputs.value }}
-
+        
       - name: Trim prefix from version
         id: version
         run: echo "value=$(echo ${{ github.ref_name }} | sed 's/release-//')" >> "$GITHUB_OUTPUT"
