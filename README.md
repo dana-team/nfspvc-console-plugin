@@ -1,6 +1,16 @@
-# OpenShift Console Plugin for nfsPVC Resources
+# nfspvc-console-plugin
 
-This project is an OpenShift Console dynamic plugin that extends the OpenShift UI with features to manage [`nfspvc.dana.io` resources](https://github.com/dana-team/nfspvc-operator). The plugin introduces a new section in the UI called `Storage Automations`, where users can view a list of existing `NFSPVCs` and create new ones via a form.
+This project is an `OpenShift Console` dynamic plugin that extends the `OpenShift UI` with features to manage [`nfspvc.dana.io` resources](https://github.com/dana-team/nfspvc-operator). 
+
+The plugin introduces a new section in the UI called `Storage Automations`, where users can view a list of existing `NFSPVCs` and create new ones via a form.
+
+## Suported Versions
+
+The plugin currently supports 3 `OpenShift UI` versions. Charts and images are available at `ghcr.io`.
+
+- `OpenShift 4.12` - under `release-4.12` branch.
+- `OpenShift 4.14` - under `release-4.14` branch.
+- `OpenShift 4.16` - under `release-4.16` branch.
 
 ## Features
 
@@ -73,7 +83,7 @@ A [Helm](https://helm.sh) chart is available to deploy the plugin to an OpenShif
 Install the chart:
 
 ```bash
-helm upgrade -i nfspvc-plugin charts/openshift-console-plugin -n nfspvc-plugin --create-namespace --set plugin.image=ghcr.io/dana-team/nfspvc-plugin:latest
+helm upgrade -i nfspvc-plugin charts/nfspvc-console-plugin -n nfspvc-plugin --create-namespace --set plugin.image=ghcr.io/dana-team/nfspvc-plugin:latest
 ```
 
 Uninstall the chart:
