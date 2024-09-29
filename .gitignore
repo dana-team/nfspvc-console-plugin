@@ -4,3 +4,10 @@
 .devcontainer/dev.env
 integration-tests/videos
 integration-tests/screenshots
+
+# editor and IDE paraphernalia
+.idea
+.vscode
+*.swp
+*.swo
+*~
