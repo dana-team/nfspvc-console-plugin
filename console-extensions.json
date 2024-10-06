@@ -11,7 +11,7 @@
     "type": "console.navigation/section",
     "properties": {
       "id": "storage-automations",
-      "name": "%plugin__console-plugin-template~Storage Automations%",
+      "name": "Storage Automations",
       "insertBefore": "storage",
       "perspective": "admin"
     }
@@ -41,7 +41,7 @@
       "perspective": "admin",
       "section": "storage-automations",
       "id": "nfspvcs",
-      "name": "%plugin__console-plugin-template~NFS PVC%",
+      "name": "NFS PVC",
       "model": {
         "group": "nfspvc.dana.io",
         "version": "v1alpha1",
